@@ -213,9 +213,17 @@ RUN sudo chown -R ${hostUser.uid}:${hostUser.gid} /home/${containerUserName} \
 	}/
 `;
 	const tempDirBase = (() => {
-		if(process.env.RUNNER_TEMP !== undefined)
-			if(fs.mkdirSync(process.env.RUNNER_TEMP, {recursive: true}) === process.env.RUNNER_TEMP)
+		if(process.env.RUNNER_TEMP !== undefined) {
+			console.log("RUNNER_TEMP:" + process.env.RUNNER_TEMP);
+			const r = fs.mkdirSync(process.env.RUNNER_TEMP, {recursive: true})
+			console.log("mkdir result:" + r);
+			if(r === process.env.RUNNER_TEMP) {
+				console.log("Using " + process.env.RUNNER_TEMP + " as tmp dir!");
 				return process.env.RUNNER_TEMP;
+			}
+		} else {
+			console.warn("RUNNER_TEMP is undefined");
+		}
 		return os.tmpdir()
 	})();
 	const tempDir = fs.mkdtempSync(path.join(tempDirBase, 'tmp-devcontainer-build-run'));
