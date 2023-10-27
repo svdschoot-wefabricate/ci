@@ -212,9 +212,13 @@ RUN sudo chown -R ${hostUser.uid}:${hostUser.gid} /home/${containerUserName} \
 		hostUser.gid
 	}/
 `;
-	const tempDir = fs.mkdtempSync(
-		path.join(os.tmpdir(), 'tmp-devcontainer-build-run'),
-	);
+	const tempDirBase = (() => {
+		if(process.env.RUNNER_TEMP !== undefined)
+			if(fs.mkdirSync(process.env.RUNNER_TEMP, {recursive: true}) === process.env.RUNNER_TEMP)
+				return process.env.RUNNER_TEMP;
+		return os.tmpdir()
+	})();
+	const tempDir = fs.mkdtempSync(path.join(tempDirBase, 'tmp-devcontainer-build-run'));
 	const derivedDockerfilePath = path.join(tempDir, 'Dockerfile');
 	fs.writeFileSync(derivedDockerfilePath, dockerfileContent);
 
