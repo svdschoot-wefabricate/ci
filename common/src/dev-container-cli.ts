@@ -109,6 +109,10 @@ function parseCliOutput<T>(value: string): T | DevContainerCliError {
   }
 }
 
+function injectTmpdir(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
+  return {...env, ...{TMPDIR: process.env.RUNNER_TEMP}};
+}
+
 async function runSpecCliJsonCommand<T>(options: {
   args: string[];
   log: (data: string) => void;
@@ -119,7 +123,7 @@ async function runSpecCliJsonCommand<T>(options: {
   const spawnOptions: SpawnOptions = {
     log: data => (stdout += data),
     err: data => options.log(data),
-    env: options.env ? {...process.env, ...options.env} : process.env,
+    env: injectTmpdir(options.env ? {...process.env, ...options.env} : process.env),
   };
   const command = getSpecCliInfo().command;
   console.log(`About to run ${command} ${options.args.join(' ')}`); // TODO - take an output arg to allow GH to use core.info
@@ -136,7 +140,7 @@ async function runSpecCliNonJsonCommand(options: {
   const spawnOptions: SpawnOptions = {
     log: data => options.log(data),
     err: data => options.log(data),
-    env: options.env ? {...process.env, ...options.env} : process.env,
+    env: injectTmpdir(options.env ? {...process.env, ...options.env} : process.env),
   };
   const command = getSpecCliInfo().command;
   console.log(`About to run ${command} ${options.args.join(' ')}`); // TODO - take an output arg to allow GH to use core.info
