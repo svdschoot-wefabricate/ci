@@ -154,7 +154,6 @@ jobs:
             ./scripts/build-test-package.sh
           push: ${{ steps.set_image_push_option.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
           env: |
             BUILD_NUMBER
@@ -494,7 +493,6 @@ jobs:
           imageTag: ${{ needs.build.outputs.image_tag }}
           push: ${{ needs.build.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
 
   test-env-vars-on-post-create:
@@ -547,7 +545,6 @@ jobs:
           imageTag: ${{ needs.build.outputs.image_tag }}
           push: ${{ needs.build.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
 
   test-gh-build-args:
@@ -592,7 +589,6 @@ jobs:
           imageTag: ${{ needs.build.outputs.image_tag }}
           push: ${{ needs.build.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
 
   test-gh-dockerfile-context:
@@ -637,7 +633,6 @@ jobs:
           imageTag: ${{ needs.build.outputs.image_tag }}
           push: ${{ needs.build.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
 
   test-gh-feature-docker-from-docker:
@@ -682,7 +677,6 @@ jobs:
           imageTag: ${{ needs.build.outputs.image_tag }}
           push: ${{ needs.build.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
 
   test-gh-docker-from-docker-non-root:
@@ -727,7 +721,6 @@ jobs:
           imageTag: ${{ needs.build.outputs.image_tag }}
           push: ${{ needs.build.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
 
   test-gh-docker-from-docker-root:
@@ -772,7 +765,6 @@ jobs:
           imageTag: ${{ needs.build.outputs.image_tag }}
           push: ${{ needs.build.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
 
   test-gh-skip-user-update:
@@ -824,7 +816,6 @@ jobs:
           imageTag: ${{ needs.build.outputs.image_tag }}
           push: ${{ needs.build.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
 
   test-compose-features:
@@ -869,7 +860,6 @@ jobs:
           imageTag: ${{ needs.build.outputs.image_tag }}
           push: ${{ needs.build.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
 
   test-no-run:
@@ -959,7 +949,6 @@ jobs:
           runCmd: echo $HOSTNAME && [[ $HOSTNAME == "my-host" ]]
           push: ${{ needs.build.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
       - name: Validate runCmdOutput output
         run: |
@@ -1010,7 +999,7 @@ jobs:
           subFolder: github-tests/Dockerfile/build-only
           imageName: ghcr.io/devcontainers/ci/tests/multiple-tags-single-platform
           imageTag: tag1-${{ github.run_id }},tag2-${{ github.run_id }}
-          push: always
+          push: never
 
       - name: Set up QEMU for multi-architecture builds
         uses: docker/setup-qemu-action@v2
@@ -1049,7 +1038,7 @@ jobs:
           imageName: ghcr.io/devcontainers/ci/tests/multiple-tags-multiple-platforms
           imageTag: tag1-${{ github.run_id }},tag2-${{ github.run_id }}
           platform: linux/amd64,linux/arm64
-          push: always
+          push: never
 
   test-multiple-tags-job2:
     name: Test multiple tags job 2
@@ -1122,7 +1111,6 @@ jobs:
           imageTag: ${{ needs.build.outputs.image_tag }}
           push: ${{ needs.build.outputs.image_push_option }}
           eventFilterForPush: |
-            push
             pull_request
           runCmd: |
             echo "test=hello" >> "$GITHUB_OUTPUT"
