@@ -3,7 +3,7 @@ set -e
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-sudo chown -R $(whoami) ~ # TODO - remove this
+# sudo chown -R $(whoami) ~ # TODO - remove this
 
 figlet common
 cd "$script_dir/../common"
